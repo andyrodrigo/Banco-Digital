@@ -43,9 +43,10 @@ public class Sistema {
 		JButton b3 = new JButton("b3");
 		JButton b4 = new JButton("b4");
 		
-		 JComboBox comboBoxClientes = new JComboBox( this.banco.getClientes() );
+		//Combox de Clientes
+		JComboBox comboBoxClientes = new JComboBox( this.banco.getClientes() );
 		
-		 JLabel label1 = new JLabel( this.banco.MSG_ABERTURA ); //Cria Label de mensagem na janela
+		JLabel label1 = new JLabel( this.banco.MSG_ABERTURA ); //Cria Label de mensagem na janela
 		 //label.setPreferredSize(new Dimension(400, 100)); //tamanho preferível da janela
 		 //frame.getContentPane().add(label, BorderLayout.NORTH); //adiciona label na janela
 		
@@ -77,6 +78,58 @@ public class Sistema {
 		 p32.add(comboBoxClientes);
 		 p33.add(addContaCorrente);
 		 p34.add(addContaPoupanca);
+		 
+		 
+		 //Actions
+		 addCliente.addActionListener(new ActionListener() {
+			    public void actionPerformed(ActionEvent e) {
+			    	String nome = JOptionPane.showInputDialog("Nome do Cliente: ");
+			    	String sobrenome = JOptionPane.showInputDialog("Sobrenome do Cliente: ");
+			    	if(nome != null && sobrenome != null ) {
+				    	Cliente cliente = new Cliente(nome, sobrenome);
+				    	Sistema.this.banco.AdicionarCliente(cliente);
+				    	comboBoxClientes.addItem(cliente);
+				    	JOptionPane.showMessageDialog(null, "Cliente " + nome + " " + sobrenome + " Inserido no Sistema");
+				    	
+			    	}else {
+			    		JOptionPane.showMessageDialog(null, "O Nome ou o Sobrenome não podem estar vazios!");
+			    	}
+			    }
+		 });
+		 
+		 addContaCorrente.addActionListener(new ActionListener() {
+			    public void actionPerformed(ActionEvent e) {
+			    	
+			    	String nome = comboBoxClientes.getSelectedItem().toString();
+					int num = JOptionPane.showConfirmDialog(null, "Criar Conta Corrente para " + nome +"?", null, JOptionPane.OK_CANCEL_OPTION );
+					System.out.println(num);
+					
+					if(num == 0) {
+				    	int i = comboBoxClientes.getSelectedIndex();
+				    	Cliente cliente = Sistema.this.banco.getCliente(i);
+				    	Conta conta = new ContaCorrente( cliente );
+				    	JOptionPane.showMessageDialog(null, "Conta Corrente criada para " + nome );
+				    	conta.imprimirExtrato();
+					}
+			    }
+		});
+		 
+		 addContaPoupanca.addActionListener(new ActionListener() {
+			    public void actionPerformed(ActionEvent e) {
+			    	
+			    	String nome = comboBoxClientes.getSelectedItem().toString();
+					int num = JOptionPane.showConfirmDialog(null, "Criar Conta Poupança para " + nome +"?", null, JOptionPane.OK_CANCEL_OPTION );
+					System.out.println(num);
+					
+					if(num == 0) {
+				    	int i = comboBoxClientes.getSelectedIndex();
+				    	Cliente cliente = Sistema.this.banco.getCliente(i);	    	
+				    	Conta conta = new ContaCorrente( cliente );
+				    	JOptionPane.showMessageDialog(null, "Conta Poupança criada para " + nome );
+				    	conta.imprimirExtrato();
+					}
+			    }
+		});
 		 
 		 
 		 
@@ -113,25 +166,9 @@ public class Sistema {
 		 
 
 		 
-		 addCliente.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    	String nome = JOptionPane.showInputDialog("Nome do Cliente: ");
-		    	String sobrenome = JOptionPane.showInputDialog("Sobrenome do Cliente: ");
-		    	if(nome != null && sobrenome != null ) {
-			    	Cliente cliente = new Cliente(nome, sobrenome);
-			    	Sistema.this.banco.AdicionarCliente(cliente);
-			    	JOptionPane.showMessageDialog(null, "Cliente " + nome + " " + sobrenome + " Inserido no Sistema");
-		    	}else {
-		    		JOptionPane.showMessageDialog(null, "O Nome ou o Sobrenome não podem estar vazios!");
-		    	}
-		    }
-		 });
+
 		 
-		 addContaCorrente.addActionListener(new ActionListener() {
-			    public void actionPerformed(ActionEvent e) {
-			    	//Conta conta = new ContaCorrente(Cliente cliente);
-			    }
-		});*/
+*/
 		 
 		 
 		 

@@ -36,6 +36,10 @@ public class Banco {
 		this.contas.add(conta);
 	}
 	
+	public Cliente getCliente( int indice) {
+		return this.clientes.get(indice);
+	}
+	
 	public String[] getClientes() {
 		
 		String[] lista = new String[ this.clientes.size() ];
