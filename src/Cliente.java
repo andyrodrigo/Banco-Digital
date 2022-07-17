@@ -10,7 +10,7 @@ public class Cliente {
 	public Cliente(String nome, String sobreNome) {
 		this.nome = nome;
 		this.sobreNome = sobreNome;
-		this.contas = new ArrayList<>();;
+		this.contas = new ArrayList<>();
 	}
 
 	public String getNome() {
