@@ -39,6 +39,9 @@ public class Sistema {
 		JButton addCliente = new JButton("Adicionar Cliente");
 		JButton addContaCorrente = new JButton("Adicionar Conta Corrente");
 		JButton addContaPoupanca = new JButton("Adicionar Conta Poupança");
+		JButton depositar = new JButton("Depositar");
+		JButton sacar = new JButton("Sacar");
+		JButton transferir = new JButton("Transferir");
 		JButton b1 = new JButton("b1");
 		JButton b2 = new JButton("b2");
 		JButton b3 = new JButton("b3");
@@ -80,6 +83,9 @@ public class Sistema {
 		 p33.add(addContaCorrente);
 		 p34.add(addContaPoupanca);
 		 
+		 p4.add(depositar);
+		 p4.add(sacar);
+		 p4.add(transferir);
 		 
 		 //Actions
 		 addCliente.addActionListener(new ActionListener() {
@@ -131,6 +137,18 @@ public class Sistema {
 				    	String dados = conta.imprimirExtratoTela();
 				    	label1.setText(dados);
 					}
+			    }
+		});
+		 
+		 depositar.addActionListener(new ActionListener() {
+			    public void actionPerformed(ActionEvent e) {
+			    	/*String conta = JOptionPane.showInputDialog("Número da Conta: ");
+			    	int num = Integer.parseInt(conta);
+			    	String deposito = JOptionPane.showInputDialog("Valor R$: ");
+			    	Double valor = Double.parseDouble(deposito);
+			    	Sistema.this.banco.getContas().indexOf(num);*/
+			    	System.out.print(Sistema.this.banco.getConta(1));
+			    	
 			    }
 		});
 		 

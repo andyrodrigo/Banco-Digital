@@ -33,7 +33,7 @@ public class Banco {
 	}
 	
 	public void AdicionarConta(Conta conta) {
-		this.contas.add(conta);
+		this.getContas().add(conta);
 	}
 	
 	public Cliente getCliente( int indice) {
@@ -52,6 +52,14 @@ public class Banco {
 	    }
 		return lista;
 		
+	}
+
+	public List<Conta> getContas() {
+		return contas;
+	}
+	
+	public Conta getConta( int indice ) {
+		return this.contas.get(indice);
 	}
 
 }
