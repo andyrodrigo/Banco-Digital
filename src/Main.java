@@ -24,8 +24,8 @@ public class Main {
 		System.out.println(num);
 		
 		if(num == 0) {
-			Banco banco = new Banco();
-			banco.iniciar();
+			Sistema sistema = new Sistema();
+			sistema.iniciar();
 		}else {
 			JOptionPane.showMessageDialog(null, "Operação Encerrada");
 			System.exit(0);

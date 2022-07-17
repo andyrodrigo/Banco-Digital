@@ -37,4 +37,8 @@ public class Cliente {
 		System.out.println("Contas de " + this.getNome() + " " + this.getSobreNome() + ": " + contas);
 	}
 	
+	public String toString(){
+		return this.nome + " " + this.sobreNome;
+	}
+	
 }
