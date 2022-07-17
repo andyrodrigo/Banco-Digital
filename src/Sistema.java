@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class Sistema {
 	
@@ -46,7 +47,7 @@ public class Sistema {
 		//Combox de Clientes
 		JComboBox comboBoxClientes = new JComboBox( this.banco.getClientes() );
 		
-		JLabel label1 = new JLabel( this.banco.MSG_ABERTURA ); //Cria Label de mensagem na janela
+		JLabel label1 = new JLabel( "<html>" + this.banco.MSG_ABERTURA + "</html>", SwingConstants.CENTER ); //Cria Label de mensagem na janela
 		 //label.setPreferredSize(new Dimension(400, 100)); //tamanho preferível da janela
 		 //frame.getContentPane().add(label, BorderLayout.NORTH); //adiciona label na janela
 		
@@ -109,7 +110,8 @@ public class Sistema {
 				    	Cliente cliente = Sistema.this.banco.getCliente(i);
 				    	Conta conta = new ContaCorrente( cliente );
 				    	JOptionPane.showMessageDialog(null, "Conta Corrente criada para " + nome );
-				    	conta.imprimirExtrato();
+				    	String dados = conta.imprimirExtratoTela();
+				    	label1.setText(dados);
 					}
 			    }
 		});
@@ -126,7 +128,8 @@ public class Sistema {
 				    	Cliente cliente = Sistema.this.banco.getCliente(i);	    	
 				    	Conta conta = new ContaCorrente( cliente );
 				    	JOptionPane.showMessageDialog(null, "Conta Poupança criada para " + nome );
-				    	conta.imprimirExtrato();
+				    	String dados = conta.imprimirExtratoTela();
+				    	label1.setText(dados);
 					}
 			    }
 		});

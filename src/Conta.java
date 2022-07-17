@@ -56,4 +56,11 @@ public abstract class Conta implements IConta {
 		System.out.println( String.format("Número: %d", this.numero) );
 		System.out.println( String.format("Saldo: %.2f", this.saldo) );
 	}
+	
+	protected String impressaoComum2() {
+		return String.format("Cliente: %s", this.cliente) + "<br>" + String.format("Agência: %d", this.agencia) + "<br>" +
+				String.format("Número: %d", this.numero) + "<br>" + String.format("Saldo: %.2f", this.saldo);
+	}
+
+	protected abstract String imprimirExtratoTela();
 }
