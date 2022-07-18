@@ -42,10 +42,8 @@ public class Sistema {
 		JButton depositar = new JButton("Depositar");
 		JButton sacar = new JButton("Sacar");
 		JButton transferir = new JButton("Transferir");
-		JButton b1 = new JButton("b1");
-		JButton b2 = new JButton("b2");
-		JButton b3 = new JButton("b3");
-		JButton b4 = new JButton("b4");
+		JButton saldo = new JButton("Verificar Saldo");
+
 		
 		//Combox de Clientes
 		JComboBox comboBoxClientes = new JComboBox( this.banco.getClientes() );
@@ -83,9 +81,11 @@ public class Sistema {
 		 p33.add(addContaCorrente);
 		 p34.add(addContaPoupanca);
 		 
+		 p4.add(saldo);
 		 p4.add(depositar);
 		 p4.add(sacar);
 		 p4.add(transferir);
+		 
 		 
 		 //Actions
 		 addCliente.addActionListener(new ActionListener() {
@@ -94,7 +94,7 @@ public class Sistema {
 			    	String sobrenome = JOptionPane.showInputDialog("Sobrenome do Cliente: ");
 			    	if(nome != null && sobrenome != null ) {
 				    	Cliente cliente = new Cliente(nome, sobrenome);
-				    	Sistema.this.banco.AdicionarCliente(cliente);
+				    	Sistema.this.banco.adicionarCliente(cliente);
 				    	comboBoxClientes.addItem(cliente);
 				    	JOptionPane.showMessageDialog(null, "Cliente " + nome + " " + sobrenome + " Inserido no Sistema");
 				    	
@@ -115,6 +115,7 @@ public class Sistema {
 				    	int i = comboBoxClientes.getSelectedIndex();
 				    	Cliente cliente = Sistema.this.banco.getCliente(i);
 				    	Conta conta = new ContaCorrente( cliente );
+				    	Sistema.this.banco.adicionarConta(conta);
 				    	JOptionPane.showMessageDialog(null, "Conta Corrente criada para " + nome );
 				    	String dados = conta.imprimirExtratoTela();
 				    	label1.setText(dados);
@@ -133,6 +134,7 @@ public class Sistema {
 				    	int i = comboBoxClientes.getSelectedIndex();
 				    	Cliente cliente = Sistema.this.banco.getCliente(i);	    	
 				    	Conta conta = new ContaCorrente( cliente );
+				    	Sistema.this.banco.adicionarConta(conta);
 				    	JOptionPane.showMessageDialog(null, "Conta Poupança criada para " + nome );
 				    	String dados = conta.imprimirExtratoTela();
 				    	label1.setText(dados);
@@ -140,65 +142,141 @@ public class Sistema {
 			    }
 		});
 		 
-		 depositar.addActionListener(new ActionListener() {
+		
+		 saldo.addActionListener(new ActionListener() {
 			    public void actionPerformed(ActionEvent e) {
-			    	/*String conta = JOptionPane.showInputDialog("Número da Conta: ");
-			    	int num = Integer.parseInt(conta);
-			    	String deposito = JOptionPane.showInputDialog("Valor R$: ");
-			    	Double valor = Double.parseDouble(deposito);
-			    	Sistema.this.banco.getContas().indexOf(num);*/
-			    	System.out.print(Sistema.this.banco.getConta(1));
-			    	
+			    	String numConta = JOptionPane.showInputDialog("Número da Conta: ");
+					try {
+						int num = Integer.parseInt(numConta);
+					    Conta conta = Sistema.this.banco.buscaConta(num);
+					    	
+					    if( conta.getNumero() == 0 ) {
+				    		//Não existe esta conta
+				    		JOptionPane.showMessageDialog(null, "Não existe conta com este número!");
+				    		System.out.println("Invalida");
+					    }else {
+					    		System.out.println("Imprimir");
+					    		JOptionPane.showMessageDialog(null, "Saldo Atual: " + String.format("%.2f", conta.getSaldo() ) +"R$ ");
+						    	String dados = conta.imprimirExtratoTela();
+						    	label1.setText(dados);
+					    }
+					}catch(NumberFormatException erro){
+						JOptionPane.showMessageDialog(null, "Entrada Inválida: " + erro.getMessage());
+					}
 			    }
 		});
 		 
+		 depositar.addActionListener(new ActionListener() {
+			    public void actionPerformed(ActionEvent e) {
+			    	String numConta = JOptionPane.showInputDialog("Número da Conta: ");
+					try {
+						int num = Integer.parseInt(numConta);
+				    	String deposito = JOptionPane.showInputDialog("Valor do depósito R$: ");
+				    	
+				    	try {
+					    	Double valor = Double.parseDouble(deposito);
+					    	
+					    	Conta conta = Sistema.this.banco.buscaConta(num);
+					    	if( conta.getNumero() == 0 ) {
+					    		//Não existe esta conta
+					    		JOptionPane.showMessageDialog(null, "Não existe conta com este número!");
+					    		System.out.println("Invalida");
+					    	}else {
+					    		System.out.println("Pode Depositar");
+					    		Sistema.this.banco.buscaConta(num).depositar(valor);
+						    	String dados = conta.imprimirExtratoTela();
+						    	label1.setText(dados);
+						    	JOptionPane.showMessageDialog(null, "Depositado " + String.format("%.2f", valor) +"R$ " + "na conta número "+ num);
+					    	}
+				    		
+						}catch(NumberFormatException erro){
+							JOptionPane.showMessageDialog(null, "Entrada Inválida: " + erro.getMessage());
+						}
+					}catch(NumberFormatException erro){
+						JOptionPane.showMessageDialog(null, "Entrada Inválida: " + erro.getMessage());
+					}
+			    }
+		});
 		 
+		 sacar.addActionListener(new ActionListener() {
+			    public void actionPerformed(ActionEvent e) {
+			    	String numConta = JOptionPane.showInputDialog("Número da Conta: ");
+					try {
+						int num = Integer.parseInt(numConta);
+				    	String saque = JOptionPane.showInputDialog("Valor do saque R$: ");
+				    	
+				    	try {
+					    	Double valor = Double.parseDouble(saque);
+					    	
+					    	Conta conta = Sistema.this.banco.buscaConta(num);
+					    	if( conta.getNumero() == 0 ) {
+					    		//Não existe esta conta
+					    		JOptionPane.showMessageDialog(null, "Não existe conta com este número!");
+					    		System.out.println("Invalida");
+					    	}else {
+					    		if( Sistema.this.banco.buscaConta(num).checarSaldo(valor) ) {
+						    		System.out.println("Pode Sacar");
+						    		Sistema.this.banco.buscaConta(num).sacar(valor);
+							    	String dados = conta.imprimirExtratoTela();
+							    	label1.setText(dados);
+							    	JOptionPane.showMessageDialog(null, "Sacado " + String.format("%.2f", valor) +"R$ " + "da conta número "+ num);
+					    		}else {
+					    			JOptionPane.showMessageDialog(null, "Saldo insuficiente!");
+					    		}
+					    	}
+				    		
+						}catch(NumberFormatException erro){
+							JOptionPane.showMessageDialog(null, "Entrada Inválida: " + erro.getMessage());
+						}
+					}catch(NumberFormatException erro){
+						JOptionPane.showMessageDialog(null, "Entrada Inválida: " + erro.getMessage());
+					}
+			    }
+		});
 		 
-		 
-		 
-		 /*
-
-		 //frame.pack( ); //ajusta a janelka ao tamanho de preferência
-		 
-		 
-		 
-		 
-		 
-		 JPanel jpanel  = new JPanel( ); // Onde ficará os botões
-		 jpanel.setPreferredSize(new Dimension(400, 100)); //tamanho preferível da janela
-		 frame.getContentPane().add(jpanel);
-		 JPanel jpanel2  = new JPanel( ); // Onde ficará os botões
-		 jpanel2.setPreferredSize(new Dimension(400, 100)); //tamanho preferível da janela
-		 frame.getContentPane().add(jpanel2);
-		 
-
-		 JButton listaClientes = new JButton("Listar Clientes");
-		 JButton listaContas = new JButton("Listar Contas");
-		 addCliente.setPreferredSize(new Dimension(200, 50));
-		 addContaCorrente.setPreferredSize(new Dimension(200, 50));
-		 addContaPoupanca.setPreferredSize(new Dimension(200, 50));
-		 listaClientes.setPreferredSize(new Dimension(200, 50));
-		 listaContas.setPreferredSize(new Dimension(200, 50));
-		 jpanel.add(addCliente);
-		 jpanel.add(addContaCorrente);
-		 jpanel.add(addContaPoupanca);
-		 jpanel.add(listaClientes);
-		 jpanel.add(listaContas);
-		 
-
-		 
-
-		 
-*/
-		 
-		 
-		 
-		 
-		 
+		 transferir.addActionListener(new ActionListener() {
+			    public void actionPerformed(ActionEvent e) {
+			    	String numConta1 = JOptionPane.showInputDialog("Número da Conta Debitada: ");
+			    	String numConta2 = JOptionPane.showInputDialog("Número da Conta Creditada: ");
+					try {
+						int num1 = Integer.parseInt(numConta1);
+						int num2 = Integer.parseInt(numConta2);
+						
+				    	String transferencia = JOptionPane.showInputDialog("Valor da transferência R$: ");
+				    	
+				    	try {
+					    	Double valor = Double.parseDouble(transferencia);
+					    	
+					    	Conta conta1 = Sistema.this.banco.buscaConta(num1);
+					    	Conta conta2 = Sistema.this.banco.buscaConta(num2);
+					    	if( conta1.getNumero() == 0 ) {
+					    		//Não existe esta conta
+					    		JOptionPane.showMessageDialog(null, "Não existe conta de número " + num1);
+					    		System.out.println("Invalida");
+					    	}else if( conta2.getNumero() == 0 ){
+					    		//Não existe esta conta
+					    		JOptionPane.showMessageDialog(null, "Não existe conta de número " + num2);
+					    		System.out.println("Invalida");
+					    	}else{
+					    		if( Sistema.this.banco.buscaConta(num1).checarSaldo(valor) ) {
+						    		System.out.println("Pode Transferir");
+						    		Sistema.this.banco.buscaConta(num1).transferir(valor, Sistema.this.banco.buscaConta(num2) );
+							    	String dados = conta1.imprimirExtratoTela() + conta2.imprimirExtratoTela() ;
+							    	label1.setText(dados);
+							    	JOptionPane.showMessageDialog(null, "Tranferido " + String.format("%.2f", valor) +"R$ " + "da conta "+ num1 + " para a conta " + num2 );
+					    		}else {
+					    			JOptionPane.showMessageDialog(null, "Saldo insuficiente!");
+					    		}
+					    	}
+				    		
+						}catch(NumberFormatException erro){
+							JOptionPane.showMessageDialog(null, "Entrada Inválida: " + erro.getMessage());
+						}
+					}catch(NumberFormatException erro){
+						JOptionPane.showMessageDialog(null, "Entrada Inválida: " + erro.getMessage());
+					}
+			    }
+		});
 		 
 	}
-
-	
-	
-
 }

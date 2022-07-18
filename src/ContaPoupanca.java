@@ -5,6 +5,11 @@ public class ContaPoupanca extends Conta {
 		super(cliente);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public ContaPoupanca () {
+		this.agencia = 0;
+		this.numero = 0;
+	}
 
 	public void imprimirExtrato() {
 		

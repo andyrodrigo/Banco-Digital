@@ -16,6 +16,11 @@ public abstract class Conta implements IConta {
 		this.cliente.addConta(this);
 	}
 	
+	public Conta () {
+		this.agencia = 0;
+		this.numero = 0;
+	}
+	
 	public int getAgencia() {
 		return agencia;
 	}
@@ -28,14 +33,16 @@ public abstract class Conta implements IConta {
 		return saldo;
 	}
 
-	public void setSaldo(double saldo) {
-		this.saldo = saldo;
+	public Boolean checarSaldo( double valor ) {
+		if( valor <= this.saldo ) {
+			return true;
+		}
+		return false;
 	}
-
+	
 	@Override
 	public void sacar( double valor ) {
-		this.saldo = saldo - valor;
-		
+		this.saldo = saldo - valor;		
 	}
 
 	@Override

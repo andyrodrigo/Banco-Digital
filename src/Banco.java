@@ -28,11 +28,11 @@ public class Banco {
 		return nome;
 	}
 	
-	public void AdicionarCliente(Cliente cliente) {
+	public void adicionarCliente(Cliente cliente) {
 		this.clientes.add(cliente);
 	}
 	
-	public void AdicionarConta(Conta conta) {
+	public void adicionarConta(Conta conta) {
 		this.getContas().add(conta);
 	}
 	
@@ -58,8 +58,25 @@ public class Banco {
 		return contas;
 	}
 	
-	public Conta getConta( int indice ) {
-		return this.contas.get(indice);
+	public int getContaNumero(int i) {
+			return this.contas.get(i).numero;
+	}
+	
+	public Conta buscaConta(int numero){
+
+		if(this.contas.size() == 0) {
+			System.out.println("Nenhuma Conta");
+		}else {
+			Iterator<Conta> iterador = this.contas.iterator();
+		    while( iterador.hasNext() ) {
+		    	Conta next = iterador.next();
+		    	if(next.numero == numero) {
+		    		return next;	
+		    	}
+		    }
+		}
+		Conta conta = new ContaPoupanca();
+		return conta;
 	}
 
 }
